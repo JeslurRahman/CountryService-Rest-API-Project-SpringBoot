@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.countryservice.demo.beans.Country;
 import com.countryservice.demo.controllers.AddResponse;
 
+//If we need to inject this class into other classes we need to add this annotation
+@Component 
 public class CountryService {
 	
 	//HashMap
@@ -44,7 +48,7 @@ public class CountryService {
 		{
 			if(countryIdMap.get(i).getCountryName().equals(countryName))
 			{
-				countryIdMap.get(i);
+				country = countryIdMap.get(i);
 			}
 		}	
 		return country;
