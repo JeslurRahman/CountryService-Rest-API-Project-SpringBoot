@@ -17,6 +17,8 @@ import com.countryservice.demo.repositories.CountryRepository;
 @Service //we have to mention this because this is micro service class
 public class CountryService 
 {
+	//This class has business logic
+	
 	@Autowired
 	CountryRepository countryRepository;
 	
