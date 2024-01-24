@@ -32,16 +32,19 @@ public class CountryService
 	
 	public Country getCountryByName(String countryName)
 	{
-		List<Country> countries = countryRepository.findAll();
 		Country country = null;
-		
+		List<Country> countries = countryRepository.findAll();
+	
 		//for each loop
 		for(Country coun: countries)
 		{
 			if(coun.getCountryName().equalsIgnoreCase(countryName))
+			{
 				country = coun;
+				break;
+			}
 		}
-		
+
 		return  country;
 	}
 	
