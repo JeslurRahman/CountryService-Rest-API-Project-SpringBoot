@@ -4,16 +4,81 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.countryservice.demo.beans.Country;
 import com.countryservice.demo.controllers.AddResponse;
+import com.countryservice.demo.repositories.CountryRepository;
 
 //If we need to inject this class into other classes we need to add this annotation
-@Component 
-public class CountryService {
+@Component
+@Service //we have to mention this because this is micro service class
+public class CountryService 
+{
+	@Autowired
+	CountryRepository countryRepository;
 	
-	//HashMap
+	public List<Country> getAllCountries()
+	{
+		return countryRepository.findAll();
+	}
+	
+	public Country getCountryById(int id)
+	{
+		return countryRepository.findById(id).get();
+	}
+	
+	public Country getCountryByName(String countryName)
+	{
+		List<Country> countries = countryRepository.findAll();
+		Country country = null;
+		
+		//for each loop
+		for(Country coun: countries)
+		{
+			if(coun.getCountryName().equalsIgnoreCase(countryName))
+				country = coun;
+		}
+		
+		return  country;
+	}
+	
+	public Country addCountry(Country country)
+	{
+		country.setId(getMaxId());
+		countryRepository.save(country);
+		return country;
+	}
+	
+	//Utility method to get max id (generate ID automatically for each new record)
+	public int getMaxId()
+	{
+		return countryRepository.findAll().size()+ 1;
+	}
+	
+	public Country updateCountry(Country country)
+	{
+		countryRepository.save(country);
+		return country;
+	}
+	
+	public AddResponse deleteCountry(int id)
+	{
+		countryRepository.deleteById(id);
+		AddResponse res = new AddResponse();
+		res.setMsg("Country Deleted succesfully!");
+		res.setId(id);
+		return res;
+	}
+	
+	
+	
+	//HashMap 
+	//HashMap in Java stores the data in (Key, Value) pairs, and you can access them by an index of another type (e.g. an Integer).
+	//One object is used as a key (index) to another object (value).
+	/*
 	static HashMap<Integer, Country> countryIdMap;
 	
 	public CountryService()
@@ -91,5 +156,6 @@ public class CountryService {
 		res.setId(id);
 		return res;
 	}
+	*/
 
 }
