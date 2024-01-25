@@ -23,6 +23,11 @@ import com.countryservice.demo.services.CountryService;
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(classes = {CountryControllerMockitoTests.class})
 public class CountryControllerMockitoTests {
+	
+	//Note:-
+	/*Mockito is generally used for mocking Java objects,
+	 * primarily focusing on unit testing by isolating a class from its dependencies.
+	*/
 
 	@Mock
 	CountryService countryServiceMock;
