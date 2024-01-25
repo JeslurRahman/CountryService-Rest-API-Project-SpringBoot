@@ -55,7 +55,7 @@ public class CountryController {
 			
 			/*when return a object not only returning the object along with that if we need to return http response, 
 			 * status code and there are multiple things for that we can use special class call "ResponseEntity<>"  */
-			return new ResponseEntity<Country>(country,HttpStatus.OK);
+			return new ResponseEntity<Country>(country,HttpStatus.FOUND);
 		}
 		catch(Exception e)
 		{
