@@ -69,6 +69,12 @@ public class CountryService
 		return country;
 	}
 	
+	public void deleteCountry(Country country)
+	{
+		countryRepository.delete(country);
+	}
+	
+	/*
 	public AddResponse deleteCountry(int id)
 	{
 		countryRepository.deleteById(id);
@@ -77,7 +83,7 @@ public class CountryService
 		res.setId(id);
 		return res;
 	}
-	
+	*/
 	
 	
 	//HashMap 

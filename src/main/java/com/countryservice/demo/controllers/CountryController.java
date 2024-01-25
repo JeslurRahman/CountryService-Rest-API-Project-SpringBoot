@@ -1,6 +1,7 @@
 package com.countryservice.demo.controllers;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,9 +32,18 @@ public class CountryController {
 	CountryService countryService;
 	
 	@GetMapping("/getCountries")
-	public List<Country> getCountries()
+	public ResponseEntity<List<Country>> getCountries()
 	{
-		return countryService.getAllCountries();
+		try 
+		{
+			List<Country> countries = countryService.getAllCountries();
+			return new ResponseEntity<List<Country>>(countries, HttpStatus.FOUND);
+		}
+		catch(Exception e)
+		{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
 	}
 	
 	@GetMapping("/getCountryById/{id}")
@@ -60,18 +70,26 @@ public class CountryController {
 		try 
 		{
 			Country country = countryService.getCountryByName(countryName);
-			return new ResponseEntity<Country>(country,HttpStatus.OK);
+			return new ResponseEntity<Country>(country,HttpStatus.FOUND);
 		}
-		catch(Exception e)
+		catch(NoSuchElementException e)
 		{
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 	
 	@PostMapping("/addCountry")
-	public Country addCountry(@RequestBody Country country)
+	public ResponseEntity<Country> addCountry(@RequestBody Country country)
 	{
-		return countryService.addCountry(country);
+		try 
+		{
+			country = countryService.addCountry(country);
+			return new ResponseEntity<Country>(country,HttpStatus.CREATED);
+		}
+		catch(NoSuchElementException e)
+		{
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 	}
 	
 	@PutMapping("/updateCountry/{id}")
@@ -95,11 +113,28 @@ public class CountryController {
 	}
 	
 	@DeleteMapping("/deleteCountry/{id}")
+	public ResponseEntity<Country> deleteCountry(@PathVariable(value="id") int id)
+	{
+		Country country = null;
+		try
+		{
+			country = countryService.getCountryById(id);
+			countryService.deleteCountry(country);
+		}
+		catch(NoSuchElementException e)
+		{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Country>(country, HttpStatus.OK);
+	}
+	
+	/*
+	@DeleteMapping("/deleteCountry/{id}")
 	public AddResponse deleteCountry(@PathVariable(value="id") int id)
 	{
 		return countryService.deleteCountry(id);
 	}
-	
+	*/
 	
 	//This implementation was added before adding repository class 
 	/*
